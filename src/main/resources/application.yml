@@ -1,0 +1,137 @@
+# Application configuration start time: 2025-04-25 14:33:44 UTC
+# Current user: tanmoydas0403
+
+# Spring framework related configurations
+spring:
+  # Application name definition
+  application:
+    name: 34_Spring_Batch
+
+  # Database configuration using H2 in-memory database
+  datasource:
+    url: jdbc:h2:mem:testdb              # H2 in-memory database URL
+    driverClassName: org.h2.Driver        # H2 JDBC driver
+    username: sa                          # Database username
+    password: ''                          # Empty password for development
+    # HikariCP connection pool settings
+    hikari:
+      maximum-pool-size: 10              # Maximum number of connections
+      minimum-idle: 5                    # Minimum idle connections
+      idle-timeout: 300000               # Maximum idle time (5 minutes)
+      connection-timeout: 20000          # Connection timeout (20 seconds)
+
+  # H2 Console configuration
+  h2:
+    console:
+      enabled: true                      # Enable H2 web console
+      path: /h2-console                  # Console access path
+      settings:
+        web-allow-others: false          # Restrict remote access
+        trace: false                     # Disable SQL trace
+
+  # JPA (Java Persistence API) settings
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect  # Set dialect for H2
+    hibernate:
+      ddl-auto: update                   # Auto-update database schema
+    show-sql: true                       # Show SQL in logs
+    properties:
+      hibernate:
+        format_sql: true                 # Pretty print SQL
+        generate_statistics: true        # Generate Hibernate statistics
+
+  # Thymeleaf template engine configuration
+  thymeleaf:
+    cache: false                         # Disable template caching
+    enabled: true                        # Enable Thymeleaf
+    prefix: classpath:/templates/        # Template location
+    suffix: .html                        # Template file extension
+    mode: HTML                           # Template mode
+    encoding: UTF-8                      # Character encoding
+
+  # Spring Batch configuration
+  batch:
+    jdbc:
+      initialize-schema: always          # Initialize batch tables
+      table-prefix: BATCH_              # Prefix for batch tables
+    job:
+      enabled: false                     # Disable auto-job execution
+      names: importCustomerJob          # Job name to execute
+
+  # File upload configuration
+  servlet:
+    multipart:
+      enabled: true                      # Enable file upload
+      max-file-size: 10MB               # Maximum file size
+      max-request-size: 10MB            # Maximum request size
+      file-size-threshold: 2KB          # Threshold for disk writing
+
+  # Transaction configuration
+  transaction:
+    default-timeout: 30s                # Default transaction timeout
+
+  # Security configuration
+  security:
+    user:
+      name: tanmoydas0403               # Default username
+      password: password                # Default password
+
+# Server configuration
+server:
+  port: 8080                            # Server port
+  servlet:
+    context-path: /batch-app            # Application context path
+  error:
+    whitelabel:
+      enabled: false                    # Disable default error page
+    include-message: always             # Include error messages
+    include-binding-errors: always      # Include binding errors
+    include-exception: true             # Include exception details
+    include-stacktrace: always          # Include stack traces
+    path: /error                        # Error path
+
+# File upload/export paths
+upload:
+  path: ${user.home}/batch-app/uploads/excel    # Excel upload directory
+
+csv:
+  export:
+    path: ${user.home}/batch-app/exports/csv    # CSV export directory
+
+pdf:
+  export:
+    path: ${user.home}/batch-app/exports/pdf    # PDF export directory
+
+# Logging configuration
+logging:
+  level:
+    org:
+      springframework:
+        batch: DEBUG                     # Batch logging level
+        web: INFO                        # Web logging level
+      hibernate: INFO                    # Hibernate logging level
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'  # Log pattern
+  file:
+    name: ${user.home}/batch-app/logs/batch-app.log  # Log file location
+    max-size: 10MB                      # Maximum log file size
+    max-history: 5                      # Number of log files to keep
+
+# Application specific configuration
+app:
+  batch:
+    chunk-size: 100                     # Records per chunk
+    retry-limit: 3                      # Maximum retries
+    skip-limit: 10                      # Maximum records to skip
+  user:
+    name: tanmoydas0403                 # Application username
+  timezone: UTC                         # Application timezone
+
+# Application information
+info:
+  app:
+    name: Customer Data Management System       # Application name
+    description: Spring Batch Application for Customer Data Processing  # Description
+    version: 1.0.0                            # Version number
+    java:
+      version: ${java.version}                # Java version
